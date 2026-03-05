@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authenticating OAI...</title>
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #FFF8F0;
+            font-family: 'Outfit', sans-serif;
+            color: #1A1A1A;
+        }
+
+        .loader {
+            border: 4px solid #E5E5E5;
+            border-top: 4px solid #FF6B35;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader"></div>
+    <h2 id="auth-status">Verifying ORCiD...</h2>
+
+    <script type="module">
+        // Parse the access token from the URL hash
+        function handleAuthCallback() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+
+            const accessToken = params.get('access_token');
+            const idToken = params.get('id_token'); // The OpenID Connect JWT
+            const error = params.get('error');
+
+            const statusEl = document.getElementById('auth-status');
+
+            if (error) {
+                statusEl.innerText = "Authentication failed: " + error;
+                statusEl.style.color = "red";
+                setTimeout(() => window.location.href = '/', 3000);
+                return;
+            }
+
+            if (accessToken && idToken) {
+                try {
+                    // Decode the JWT (id_token) payload manually
+                    const payloadBase64 = idToken.split('.')[1];
+                    // Fix Base64Url padding/characters and decode
+                    const payloadDecoded = JSON.parse(atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/')));
+
+                    const orcid = payloadDecoded.sub; // ORCiD is stored in the 'sub' claim
+                    const name = payloadDecoded.given_name
+                        ? (payloadDecoded.given_name + ' ' + (payloadDecoded.family_name || '')).trim()
+                        : (payloadDecoded.name || "Researcher");
+
+                    // Save credentials
+                    localStorage.setItem('oai_user', JSON.stringify({
+                        name: name,
+                        orcid: orcid,
+                        token: accessToken
+                    }));
+
+                    statusEl.innerText = "Authentication successful. Redirecting...";
+                    setTimeout(() => window.location.href = '/dashboard.html', 800);
+                } catch (e) {
+                    statusEl.innerText = "Error parsing authentication data.";
+                    console.error("JWT Parse Error", e);
+                    setTimeout(() => window.location.href = '/', 3000);
+                }
+            } else {
+                statusEl.innerText = "No credentials received from ORCiD.";
+                console.error("Missing tokens", { accessToken: !!accessToken, idToken: !!idToken });
+                setTimeout(() => window.location.href = '/', 2000);
+            }
+        }
+
+        handleAuthCallback();
+    </script>
+</body>
+
+</html>
