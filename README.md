@@ -13,3 +13,5 @@ Our service integrates with ORCiD to allow for seamless authentication and manag
 - Add a banner for important information and when OAI status is down
 - Add an admin tab for creators of OAI so they can schedule maintenance, change banners, view logs, etc.
 - Add .dockerignore
+
+This message is to redeploy the CloudFlare Pages to instantiate enviro vars.
