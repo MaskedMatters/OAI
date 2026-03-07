@@ -1,5 +1,4 @@
 :root {
-  /* Bright, sunny, warm colors */
   --color-bg: #FFF8F0;
   --color-text: #1A1A1A;
   --color-primary: #FF6B35;
@@ -9,21 +8,13 @@
   --color-accent: #FF9B42;
   --color-surface: #FFFFFF;
   --color-border: #E5E5E5;
-
-  /* Typography */
   --font-family: 'Outfit', sans-serif;
-
-  /* Spacing */
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 2rem;
   --spacing-xl: 4rem;
-
-  /* Sharp edges */
   --radius-sharp: 0px;
   --radius-sleek: 4px;
-
-  /* Shadows */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 8px 24px rgba(255, 107, 53, 0.15);
   --shadow-hover: 0 12px 32px rgba(255, 107, 53, 0.25);
@@ -50,11 +41,7 @@ a {
   color: inherit;
 }
 
-/* Typography styles */
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   font-weight: 800;
   line-height: 1.2;
 }
@@ -75,18 +62,6 @@ p {
   font-weight: 300;
   color: #4A4A4A;
   margin-bottom: var(--spacing-lg);
-}
-
-/* Layout Utilities */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-}
-
-.section {
-  padding: var(--spacing-xl) 0;
 }
 
 /* Buttons */
@@ -147,7 +122,19 @@ p {
   color: white;
 }
 
-/* Nav */
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.section {
+  padding: var(--spacing-xl) 0;
+}
+
+/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -170,7 +157,6 @@ p {
   height: 12px;
   background-color: var(--color-secondary);
   border-radius: 0;
-  /* Sharp edges */
 }
 
 .nav-links {
@@ -287,23 +273,10 @@ p {
   margin-bottom: var(--spacing-md);
 }
 
-/* Animations */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* About Page Specific Styles */
+/* About / Nomenclature */
 .nomenclature-grid {
   max-width: 800px;
-  margin: var(--spacing-xl) 0;
+  margin: 0 auto;
 }
 
 .nom-term {
@@ -312,6 +285,7 @@ p {
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-md);
   border-bottom: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
 }
 
 .nom-part {
@@ -338,6 +312,10 @@ p {
   margin-top: var(--spacing-xl);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .nom-example span {
@@ -347,50 +325,6 @@ p {
 
 .nom-example span:hover {
   color: var(--color-secondary);
-}
-
-/* Auth Modal Styles */
-.auth-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity var(--transition-smooth);
-}
-
-.auth-modal {
-  background: var(--color-surface);
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-sleek);
-  width: 90%;
-  max-width: 400px;
-  box-shadow: var(--shadow-hover);
-  transform: translateY(20px) scale(0.95);
-  transition: transform var(--transition-smooth);
-}
-
-.auth-modal input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sleek);
-  font-family: var(--font-family);
-  font-size: 1rem;
-}
-
-.auth-modal input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
 }
 
 /* Dashboard Layout */
@@ -421,6 +355,12 @@ p {
   font-weight: 600;
   color: #666;
   transition: all var(--transition-fast);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  text-align: left;
 }
 
 .sidebar-link:hover,
@@ -455,6 +395,23 @@ p {
   font-size: 0.9rem;
   font-weight: 600;
   margin-top: var(--spacing-sm);
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Mobile Responsiveness */
