@@ -7,11 +7,11 @@ export default defineConfig({
     allowedHosts: ['oai.yaylabs.dev'],
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://api.yaylabs.dev',  // was http://localhost:3000
         changeOrigin: true,
       },
       '^/16\\..*': {
-        target: 'http://localhost:3000',
+        target: 'https://api.yaylabs.dev',  // was http://localhost:3000
         changeOrigin: true,
       },
     },

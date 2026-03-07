@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getUser, clearUser, OAIUser } from '../lib/auth'
+import { getUser, clearUser, OAIUser, API_BASE } from '../lib/auth'
 
 interface OAI {
   full_id: string
@@ -14,10 +14,10 @@ const OAI_LIMIT = 20
 
 const OrcidIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#A6CE39"/>
-    <path d="M7.70275 8.73037H5.21332V17.9304H7.70275V8.73037Z" fill="white"/>
-    <path d="M10.8358 8.73037H14.1206C17.6151 8.73037 19.3496 10.7483 19.3496 13.3331C19.3496 15.9189 17.5759 17.9304 14.1206 17.9304H10.8358V8.73037ZM13.3103 16.0353C15.5458 16.0353 16.7196 14.8817 16.7196 13.3331C16.7196 11.7853 15.5458 10.6273 13.3103 10.6273H13.257V16.0353H13.3103Z" fill="white"/>
-    <path d="M6.45802 7.2185C7.29177 7.2185 7.96781 6.54228 7.96781 5.70881C7.96781 4.8753 7.29177 4.19904 6.45802 4.19904C5.62423 4.19904 4.94824 4.8753 4.94824 5.70881C4.94824 6.54228 5.62423 7.2185 6.45802 7.2185Z" fill="white"/>
+    <path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#A6CE39" />
+    <path d="M7.70275 8.73037H5.21332V17.9304H7.70275V8.73037Z" fill="white" />
+    <path d="M10.8358 8.73037H14.1206C17.6151 8.73037 19.3496 10.7483 19.3496 13.3331C19.3496 15.9189 17.5759 17.9304 14.1206 17.9304H10.8358V8.73037ZM13.3103 16.0353C15.5458 16.0353 16.7196 14.8817 16.7196 13.3331C16.7196 11.7853 15.5458 10.6273 13.3103 10.6273H13.257V16.0353H13.3103Z" fill="white" />
+    <path d="M6.45802 7.2185C7.29177 7.2185 7.96781 6.54228 7.96781 5.70881C7.96781 4.8753 7.29177 4.19904 6.45802 4.19904C5.62423 4.19904 4.94824 4.8753 4.94824 5.70881C4.94824 6.54228 5.62423 7.2185 6.45802 7.2185Z" fill="white" />
   </svg>
 )
 
@@ -55,7 +55,7 @@ export default function Dashboard() {
   const fetchOAIs = useCallback(async (u: OAIUser) => {
     setLoadingOais(true)
     try {
-      const res = await fetch('/api/user/oais', {
+      const res = await fetch(`${API_BASE}/user/oais`, {
         headers: { 'x-orcid': u.orcid, 'x-name': u.name },
       })
       if (res.ok) {
@@ -89,7 +89,7 @@ export default function Dashboard() {
     setMintStatus('Minting...')
     setMintStatusColor('#333')
     try {
-      const res = await fetch('/api/oai/mint', {
+      const res = await fetch(`${API_BASE}/oai/mint`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export default function Dashboard() {
     if (!user || !editInputs[idx]) return
     setEditStatuses(prev => ({ ...prev, [idx]: { msg: 'Saving...', color: '#333' } }))
     try {
-      const res = await fetch(`/api/oai/${encodeURIComponent(fullId)}`, {
+      const res = await fetch(`${API_BASE}/oai/${encodeURIComponent(fullId)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export default function Dashboard() {
     if (!user || !oaiToDelete) return
     setDeleteStatus('Deleting...')
     try {
-      const res = await fetch(`/api/oai/${encodeURIComponent(oaiToDelete)}`, {
+      const res = await fetch(`${API_BASE}/oai/${encodeURIComponent(oaiToDelete)}`, {
         method: 'DELETE',
         headers: { 'x-orcid': user.orcid, 'x-name': user.name },
       })
